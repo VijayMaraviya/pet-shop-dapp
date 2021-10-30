@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block body %}
+
+
+<div class="col">
+    <strong>Your Address</strong>: <span>{{user_address}}</span><br />
+    <strong>Your Balance</strong>: <span>{{user_balance}}</span><br />
+    <strong>Your Pets</strong>: <span>{{user_pets|join(', ')}}</span><br />
+
+    <!--Sell-->
+    <form class="row" method="post">
+
+        <div class="col-auto">
+            <input name="seller" type="hidden" value="{{user_address}}"></input>
+            <!-- <input name="context" type="hidden" value="List"></input> -->
+            <button name="list" type="submit" class="btn btn-success" value="List">List for Sell Now!</button>
+        </div>
+
+        <div class="col-auto">
+            <input name="seller" type="hidden" value="{{user_address}}"></input>
+            <!-- <input name="context" type="hidden" value="add"></input> -->
+            <button name="add" type="submit" class="btn btn-success" value="Add">Add a New Pet</button>
+        </div>
+
+    </form>
+
+</div>
+
+<hr />
+
+
+<!--Filters-->
+<form class="row" method="post">
+
+    {% for criteria, options in criterias.items() %}
+
+    <div class="col-auto">
+        <div class="input-group mb-3">
+            <label class="input-group-text" for={{criteria}}>{{ criteria }}</label>
+            <select name={{criteria}} class="form-select" id={{criteria}}>
+
+                <option disabled selected value="">Choose...</option>
+
+                {% for option in options %}
+                <option value="{{option}}">{{option}}</option>
+                {% endfor %}
+
+            </select>
+        </div>
+    </div>
+
+    {% endfor %}
+
+    <div class="col-auto">
+        <button type="submit" class="btn btn-secondary">Filter</button>
+    </div>
+
+</form>
+
+
+<div id="petsRow" class="row row-cols-1 row-cols-md-3 g-4">
+
+    <!-- PETS LOAD HERE -->
+
+    {% for pet in pets %}
+    <div class="col">
+
+        <div class="card">
+
+            <h3 class="card-header">{{ pet.name }}</h3>
+
+
+            <img class="card-img-top img-rounded img-center" data-src="holder.js/140x140" style="width: 100%;"
+                src="{{ url_for('static', filename=pet.picture)}}" data-holder-rendered="true">
+            <!-- <br /><br /> -->
+
+            <div class="card-body">
+                <strong>Breed</strong>: <span class="pet-breed">{{ pet.breed }}</span><br />
+                <strong>Age</strong>: <span class="pet-age">{{ pet.age }}</span><br />
+                <strong>Location</strong>: <span class="pet-location">{{ pet.location }}</span><br /><br />
+                <strong>Price</strong>: <span>{{ pet.price }} Eth</span><br /><br />
+
+                <form action='/buy' method="post">
+                    <input name="buyer" type="hidden" value="{{user_address}}"></input>
+                    <button name="petID" class="btn btn-primary" type="submit" value="{{ pet.id }}">
+                        Buy
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block body %}
+
+
+<div class="col">
+    <strong>Your Address</strong>: <span>{{user_address}}</span><br />
+    <strong>Your Balance</strong>: <span>{{user_balance}}</span><br />
+    <strong>Your Pets</strong>: <span>{{user_pets|join(', ')}}</span><br />
+
+    <hr />
+
+    <h4><strong>Add information of your pet</strong></h4><br />
+
+
+
+    <form action='/add' method="post">
+
+        <input name="owner" type="hidden" value="{{user_address}}"></input>
+
+        <div class="row row-cols-md-3">
+
+            <div class="col">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="name">name</label>
+                    <input name="name" type="text" class="form-control" id="name">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-auto">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="age">age</label>
+                    <input name="age" type="text" class="form-control" id="age" placeholder="in years">
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="breed">breed</label>
+                    <select name="breed" class="form-select" id="breed">
+
+                        <option disabled selected value="">Choose...</option>
+
+                        {% for option in breeds %}
+                        <option value="{{option}}">{{option}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="location">location</label>
+                    <input name="location" type="text" class="form-control" id="location">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row row-cols-md-3">
+
+            <div class="col">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="name">price</label>
+                    <input name="price" type="text" class="form-control" id="price" placeholder="in Eth">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-secondary">Submit</button>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+{% endblock %}

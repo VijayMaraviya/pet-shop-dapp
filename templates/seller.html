@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block body %}
+
+
+<div class="col">
+    <h4><strong>Account Information</strong></h4>
+    <strong>Your Address</strong>: <span>{{user_address}}</span><br />
+    <strong>Your Balance</strong>: <span>{{user_balance}}</span><br />
+
+</div>
+
+<hr />
+
+
+<div id="petsRow" class="row row-cols-1 row-cols-md-3 g-4">
+
+    <!-- PETS LOAD HERE -->
+
+    {% for pet in user_pets %}
+    <div class="col">
+
+        <div class="card">
+
+            <h3 class="card-header">{{ pet.name }}</h3>
+
+
+            <img class="card-img-top img-rounded img-center" data-src="holder.js/140x140" style="width: 100%;"
+                src="{{ url_for('static', filename=pet.picture)}}" data-holder-rendered="true">
+            <!-- <br /><br /> -->
+
+            <div class="card-body">
+                <strong>Breed</strong>: <span class="pet-breed">{{ pet.breed }}</span><br />
+                <strong>Age</strong>: <span class="pet-age">{{ pet.age }}</span><br />
+                <strong>Location</strong>: <span class="pet-location">{{ pet.location }}</span><br /><br />
+
+                {% if pet.isForSell %}
+                <strong>Listed for Sell </strong>: <span>{{ pet.price }} Eth</span>
+                {% else %}
+                <form action='/sell' method="post">
+                    <div class="input-group mb-3">
+                        <input name="seller" type="hidden" value="{{user_address}}"></input>
+                        <input name="price" type="text" class="form-control" placeholder="Price in Ether">
+                        <button name="petID" type="submit" class="btn btn-primary" value="{{ pet.id }}">
+                            List for Sell
+                        </button>
+                    </div>
+                </form>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
